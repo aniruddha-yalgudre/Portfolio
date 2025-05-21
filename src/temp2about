@@ -1,0 +1,110 @@
+<div className="panel w-full h-screen flex-shrink-0 p-3 text-[10px] ">
+        <div className="h-full w-full bg-red-500 flex justify-between">
+          <div className="w-3/5 h-full bg-red-300 flex justify-between pt-24">
+            <div className="relative w-1/3 h-full bg-blue-500">
+              <h1 className="text-[14px] font-Primary mb-8 md:mb-12 uppercase leading-none">
+                From Sketches to Stories <br />
+                This Is Me
+              </h1>
+
+              <p className="text-xs font-Primary uppercase leading">
+                <span className="font-semibold">Hey, </span>I'm Aniruddha <br />
+                a creative frontend wizard by day and a code-slinging software
+                dev by night. I blend pixel-perfect design with rock‑solid code
+                to build experiences that people actually enjoy.
+              </p>
+
+              <div className="absolute bottom-0 left-0 w-full h-auto bg-red-500">
+                <img
+                  className="h-full w-full object-cover object-center"
+                  src="https://i.pinimg.com/736x/9e/12/02/9e1202b0cbcdfc300c6938bd796be256.jpg"
+                  alt="Profile"
+                />
+              </div>
+            </div>
+
+            <div className="w-2/3 h-full flex justify-end">
+              <div className="w-[30%] h-full bg-black"></div>
+
+              <div className="w-[30%] h-full bg-orange-500 text-right">
+                <h1 className="text-xs font-semibold uppercase mb-4 leading-none">
+                  Say What's Up On <br />
+                  <span className="font-semibold text-[10px] tracking-tight -mr-1">
+                    【socials】
+                  </span>
+                </h1>
+
+                <div className="flex flex-col gap-2 items-end ">
+
+                  {socialsLinks.map((link,index)=> (
+                    
+                  <a href={link.url}>
+                    <Transformtext
+                      textcontent={`【${link.name}】`}
+                      classname={"uppercase leading-none -mr-1"}
+                    />
+                  </a>
+                  ))}
+                </div>
+              </div>
+
+              <div className="w-1/2 h-full bg-blue-500"></div>
+            </div>
+          </div>
+
+          <div className="w-2/5 h-full bg-pink-400 flex pt-24">
+            <div className="w-2/3 bg-white leading-3 tracking-widest flex flex-col justify-start gap-2 uppercase pr-16">
+              <h1 className="text-xs font-semibold uppercase mb-4">approach</h1>
+              <p>
+                I approach every design challenge with precision, purpose, and a
+                deep commitment to visual storytelling crafting brand
+                experiences that not only look good but feel meaningful.
+              </p>
+              <p>
+                I strive to bring a mix of diverse perspectives that spark fresh
+                ideas, uncover hidden opportunities, and fuel original,
+                meaningful work.
+              </p>
+
+              <p>
+                I see collaboration not just as a step in the process, but as a
+                mindset. I work closely with clients as creative partners
+                listening, questioning, and building together. Whether I'm
+                collaborating with agencies or integrating into internal teams,
+                I bring a fresh perspective, adaptability, and sharp design
+                thinking to every project.
+              </p>
+
+              <p>
+                From strategic branding to thoughtful digital design, I help
+                businesses express who they are and connect with the people who
+                matter. Big or small, bold or refined I turn ideas into
+                experiences that stand apart.
+              </p>
+            </div>
+
+            <div className="w-1/3 bg-slate-400 flex flex-col justify-start items-end leading-3 tracking-widest uppercase text-right gap-2">
+              <h1 className="text-xs font-semibold uppercase mb-4">Services</h1>
+
+              <div className="flex flex-col gap-">
+                <h5 className="font-bold mb-3">Digital</h5>
+                <p>Web & Product Interface Design</p>
+                <p>UX/UI Design</p>
+                <p>Prototyping & User Testing</p>
+                <p>Digital Strategy & Visual Frameworks</p>
+                <p>Information Architecture</p>
+              </div>
+
+              <div className="flex flex-col gap-">
+                <h5 className="font-bold mb-3">beyond design</h5>
+
+                <p>Freelance Creative Collaboration</p>
+                <p>Design Consulting & Supervision</p>
+                <p>Project Direction & Oversight</p>
+                <p>Talks, Guest Sessions & Panels</p>
+                <p>Workshops, Mentorship & Design Education</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>

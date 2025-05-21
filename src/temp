@@ -1,0 +1,177 @@
+import React from "react";
+
+const About = () => {
+  return (
+    <div className=" h-screen bg-green-600 w-full p-3 text-[10px]">
+      <div className=" h-full w-full bg-red-500 flex justify-between ">
+
+        <div className=" w-3/5 h-full bg-red-300 flex justify-between">
+
+              <div className=" w-1/3 h-full bg-blue-500">
+            <h1 className="text-3xl  font-Primary mb-8 md:mb-12 uppercase leading-none  ">
+              this is me
+            </h1>
+
+            <p className="text-xs  font-Primary mb-8 md:mb-12 uppercase leading-none  ">
+              who i am
+            </p>
+              </div>
+
+              <div className="w-2/3 h-full flex  justify-end ">
+                 
+                 <div className=" w-[30%] h-full bg-black  ">
+                 jk
+                 </div>
+                 
+                 <div className=" w-[30%] h-full bg-blue-950 ">
+                 jk
+                 </div>
+                 
+                 <div className=" w-1/2 h-full bg-blue-500 ">
+                 jk
+                 </div>
+
+                 
+              </div>
+        
+        </div>
+
+        <div className=" w-2/5 h-full bg-pink-400 flex "> 
+         
+         <div className=" w-2/3 bg-black "></div>
+         <div className="w-1/3 bg-slate-400 "></div>
+        
+        </div>
+
+      </div>
+    </div>
+  );
+};
+
+export default About;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div className=" md:absolute top-0 left-0 h-[45vh] w-full  md:h-full  md:w-[60%] flex md:justify-start items-center ">
+  <h1 className=" text-[10vw] md:text-[7vw] font-['Secondary']  tracking-tighter leading-none   ">
+    let's do something epic shit
+    <span ref={tagRef} className="inline-block ml-[5%] ">
+      !!
+    </span>
+    {/* <span className="absolute  md:absolute h-[25vh] md:h-[35vh] mix-blend-difference w-fit left-[44%] top-[10%] -rotate-[19deg] text-fill-transparent  tracking-wide  md:top-[40%] md:left-1/2  -translate-x-1/2 translate-y-1/2  transform  md:-rotate-[25deg] ">  */}
+    {/* shit !!  */}
+    {/* <img className=" h-full w-full object-cover object-center" src={shitimg} alt="" srcset="" /> */}
+    {/* </span> */}
+  </h1>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+{/* Overlay Loader - Desktop */}
+      <div className=" hidden md:block top-0 left-0  h-screen w-screen z-[999]">        
+        <div className=" top-1/2 left-1/2 -translate-x-1/2  -translate-y-1/2 w-full h-full">
+
+          <div className="text-[10px] leading-none flex justify-between items-start px-3">
+        
+            <div className=" w-3/5  flex justify-between">
+              {/* Date Display */}
+              <div className="logo">
+                <div className="">
+                  <DateDisplay />
+                </div>
+              </div>
+
+              {/* Time & Location */}
+              <div className="links-part flex flex-col items-end leading-none mr-[17.67vw]">
+                <p>{currentTime} IST</p>
+                <div className="location flex items-end gap-2">
+                  <p>12.9351N, 80.2310E </p>
+                </div>
+              </div>
+            </div>
+
+            <div className=" w-2/5 flex justify-between">
+              {/* Scrambled Text Animation */}
+              <div className="s_last-part scrambleText  relative  mr-4">
+                <p className="text-left leading-none tracking-tight">
+                  <span className="cursor-pointer inline-block h-3 w-fit saturate-200 brightness-100 text-[11px] opacity-100 leading-none">
+                    Staap <sup className=" text-[5px] -top-2 -left-0.5 ">®</sup>
+                  </span>
+                  <br />
+                  <span className=" cursor-pointer">
+                    Stories of Art and Architectural Practice
+                  </span>
+                </p>
+              </div>
+
+              {/* Description Text */}
+              <div className="relative  text-justify text-[9px] w-[27.3%] leading-none ">
+                <p className="font-[500] w-full text-right ">
+                  “Stories of Art”: the art of telling a narrative through
+                  design, and “Practice”: perfecting it through a repetitive
+                  pattern of learning and creating.
+                </p>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+
+
+
+
+
+
+
+
+
+
+      import resumeimg from "../assets/Software_Dev_Aniruddha_Resume_2025.pdf";
+// import resumeimg from "../assets/Resume.webp";
+
+const Resume = () => {
+  return (
+    <div className="h-screen md:min-h-[150dvh] w-full uppercase p-3 bg-slate-500">
+       <div className="h-full w-full bg-white flex items-center p-20">
+              
+              <div className="resume-container relative h-full w-[60%] bg-red-400">
+      {/* <iframe src={resumeimg} frameborder="0" className=" h-full w-full "></iframe> */}
+              </div>
+       </div>
+            
+    </div>
+  );
+};
+
+export default Resume;
