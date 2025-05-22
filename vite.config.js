@@ -10,11 +10,4 @@ export default defineConfig({
     host: true,  
     port: 5177,
   },
-  build: {
-    lib: {
-      entry: 'index.html',
-      formats: ['es'],
-      fileName: 'index'
-    }
-  }
 })
