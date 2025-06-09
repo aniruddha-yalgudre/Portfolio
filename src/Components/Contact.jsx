@@ -1,7 +1,8 @@
-import React, { useRef, useState, useEffect, forwardRef } from "react";
+import React, { useRef, useState, useEffect, forwardRef, useContext } from "react";
 import Transformtext from "../Partials/Transformtext";
 import { useForm, ValidationError } from "@formspree/react";
 import gsap from "gsap";
+import { ThemeContext } from "../utils/themeContext";
 
 const Contact = () => {
   const FormRef = useRef(null);
@@ -9,7 +10,7 @@ const Contact = () => {
   const [errorMsg, setErrorMsg] = useState("");
   const [state, handleSubmit] = useForm("mblopobo");
 
-
+  const { isDarkMode } = useContext(ThemeContext);
   const [isMobile, setIsMobile] = useState(window.innerWidth < 640);
 
   // Handle window resize
@@ -88,7 +89,6 @@ const Contact = () => {
   const onSubmit = async (e) => {
     e.preventDefault();
     
-
     const formData = new FormData(e.currentTarget);
 
     const name = formData.get("name").trim();
@@ -96,28 +96,32 @@ const Contact = () => {
     const phone = formData.get("phone").trim();
     const message = formData.get("message").trim();
 
-    if (!name) {
+    if (!name || name.length < 3) {
       setErrorMsg("CAN’T GHOST US WITHOUT A NAME ? ");
       setTimeout(() => setErrorMsg(""), 5000);
       return;
     }
+    
     if (!email) {
       setErrorMsg("EMAIL, BUT MAKE IT REAL !");
       setTimeout(() => setErrorMsg(""), 5000);
       return;
     }
+    
     if (!/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,})+$/.test(email)) {
       setErrorMsg("GIM'ME SOMETHING THAT ENDS IN .COM ");
       setTimeout(() => setErrorMsg(""), 5000);
       return;
     }
-    if (!phone) {
+    
+    if (!phone || !/^\d+$/.test(phone)) {
       setErrorMsg("NO DIGITS ? NO CALLS ? ");
       setTimeout(() => setErrorMsg(""), 5000);
       return;
     }
-    if (!message) {
-      setErrorMsg("YOU GOT THOUGHTS. RIGHT ? DROP ‘EM ");
+    
+    if (!message || message.split(' ').length < 3) {
+      setErrorMsg("YOU GOT THOUGHTS. RIGHT ? DROP ‘EM. ");
       setTimeout(() => setErrorMsg(""), 5000);
       return;
     }
@@ -126,10 +130,12 @@ const Contact = () => {
     setErrorMsg("");
 
     await handleSubmit(e);
+  
   };
 
   return (
-    <div id="contact" ref={ContainerRef} className="  md:h-screen bg-transparent w-full uppercase p-3 ">
+  
+  <div id="contact" ref={ContainerRef} className="  md:h-screen  w-full uppercase p-3 ">
       <div className="relative h-full w-full flex-col md:flex justify-between items-center">
 
         <div className="md:absolute top-0 left-0 h-[45vh] w-full md:h-full md:w-[60%] flex md:justify-start items-center">
@@ -148,20 +154,31 @@ const Contact = () => {
           </h1>
         </div>
 
+
+
+
+        {/* const newBgColor = isDarkMode ? '#1E1E1E' : '#'; */}
+    {/* const newTextColor = isDarkMode ? '#dadada' : '#393939'; */}
+     
+
+
+
         <div className="md:absolute top-0 right-0 h-[40vh] w-full md:h-full md:w-[40%]">
           <div className="h-full w-full flex flex-shrink-0 justify-start items-center">
             <form onSubmit={onSubmit} ref={FormRef} className="flex flex-col gap-1 md:gap-5 w-full text-[0.70rem] uppercase">
-              <input type="text" name="name" placeholder="WHO DIS?"  autoComplete="off"  className="w-full py-1 md:py-3 bg-transparent border-b border-zinc-500 focus:outline-none uppercase" style={{ placeholderColor: 'red' }} />
+
+              <input type="text" name="name" placeholder="WHO DIS?"  autoComplete="off"  className={`w-full py-1 md:py-3 ${isDarkMode ? "bg-[#1E1E1E] text-[#dadada] " : "bg-[#E0E0E0] text-[#393939]"}  border-b border-zinc-500 focus:outline-none uppercase`} />
+              
               <div className="flex gap-6">
                 <div className="w-2/3 md:w-1/2">
-                  <input type="email" name="email" placeholder="WHAT’S YOUR @? (aka email)"  autoComplete="off" className="w-full py-1 mt-2 md:mt-0 md:py-3 bg-transparent border-b border-zinc-500 focus:outline-none uppercase" />
+                  <input type="email" name="email" placeholder="WHAT’S YOUR @? (aka email)"  autoComplete="off" className={`w-full py-1 mt-2 md:mt-0 md:py-3 ${isDarkMode ?"bg-[#1E1E1E] text-[#dadada] " : "bg-[#E0E0E0] text-[#393939]"}  border-b border-zinc-500 focus:outline-none uppercase `} />
                   <ValidationError prefix="Email" field="email" errors={state.errors} />
                 </div>
                 <div className="w-1/3 md:w-1/2">
-                  <input type="tel" name="phone" placeholder="SLIDE YOUR DIGITS "  autoComplete="off" className="w-full py-1 mt-2 md:mt-0 md:py-3 bg-transparent border-b border-zinc-500 focus:outline-none uppercase" />
+                  <input type="tel" name="phone" placeholder="SLIDE YOUR DIGITS "  autoComplete="off" className={` ${isDarkMode ?"bg-[#1E1E1E] text-[#dadada] " : "bg-[#E0E0E0] text-[#393939]"} w-full py-1 mt-2 md:mt-0 md:py-3  border-b border-zinc-500 focus:outline-none uppercase `} />
                 </div>
               </div>
-              <textarea name="message" placeholder="DROP A MESSAGE OR A SPICY COMPLIMENT..." rows="5" className="w-full py-1 mt-2 md:mt-0 md:py-3 bg-transparent border-b border-zinc-500 focus:outline-none resize-none uppercase"></textarea>
+              <textarea name="message" placeholder="DROP A MESSAGE OR A SPICY COMPLIMENT..." rows="5" autoComplete="off"  className={` w-full py-1 mt-2 md:mt-0 md:py-3 ${isDarkMode ?"bg-[#1E1E1E] text-[#dadada] " : "bg-[#E0E0E0] text-[#393939]"} border-b border-zinc-500 focus:outline-none resize-none uppercase `}></textarea>
 
               <ValidationError prefix="Message" field="message" errors={state.errors} />
                

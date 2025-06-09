@@ -2,9 +2,8 @@ import { useEffect, useState } from "react"
 import { projectsData } from "../utils/projectsData"
 import ShaderImage from "../Partials/ShaderImage"
 
-import vid from "../assets/videos/hero_mob.mp4"
-
 const Works = ({ containerRef }) => {
+  
   const [hoveredProject, setHoveredProject] = useState(null)
   
   const [isMobile, setIsMobile] = useState(window.innerWidth < 640);
@@ -27,7 +26,7 @@ const Works = ({ containerRef }) => {
         {projectsData.map((project, index) => (
           <div
             // data-scroll
-            // data-scroll-speed="0.4"
+            // data-scroll-speed="0.2"
             key={project.id}
             className={`project-card ${index % 2 === 0 ? "w-fit h-auto text-left " : " w-3/5 h-auto text-right "} ${
               index % 2 === 0 ? "mr-6" : "ml-auto"
@@ -106,7 +105,7 @@ const Works = ({ containerRef }) => {
         </div>
 
         {/* Third row */}
-        <div className="flex flex-wrap mb-16 bg-red-600 ">
+        <div className="flex flex-wrap mb-16  ">
           <div className="w-full md:w-3/5 flex gap-4 pr-4">
           
             <div data-scroll data-scroll-speed={(Math.random() * 1.4).toFixed(2)} className="w-1/2 -mt-52">
@@ -194,7 +193,6 @@ const Works = ({ containerRef }) => {
 // Component for individual project card
 const ProjectCard = ({ project, setHoveredProject }) => {
   if (!project) return null
-
   return (
     <div
       className="project-card  pb-4 "

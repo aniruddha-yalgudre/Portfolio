@@ -3,8 +3,8 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
-  "main":"index.html",
-  "homepage":"./",
+  "main": "index.html",
+  "homepage": "./",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
@@ -23,7 +23,8 @@
     "locomotive-scroll": "^5.0.0-beta.21",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "swiper": "^11.2.6",
+    "react-router-dom": "^7.6.1",
+    "swiper": "^11.2.8",
     "three": "^0.167.1"
   },
   "devDependencies": {
@@ -37,6 +38,7 @@
     "eslint-plugin-react-refresh": "^0.4.5",
     "postcss": "^8.4.35",
     "raw-loader": "^4.0.2",
+    "sass": "^1.89.1",
     "tailwindcss": "^3.4.1",
     "vite": "^5.1.4"
   }

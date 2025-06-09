@@ -1,6 +1,6 @@
 import { useRef, useEffect } from "react"
 
-export default function ShaderImage({ imageUrl, width, height }) {
+export default function ShaderImage({ imageUrl,gl, width, height }) {
   const canvasRef = useRef()
 
   useEffect(() => {
@@ -24,16 +24,16 @@ export default function ShaderImage({ imageUrl, width, height }) {
       varying vec2 v_texCoord;
       uniform sampler2D u_texture;
       uniform float u_time;
+      uniform float u_hover;
       
       void main() {
         vec2 uv = v_texCoord;
         
         // Simple distortion effect
-        uv.x += sin(uv.y * 1.0 + u_time) * 0.01;
+        uv.x += sin(uv.y * 1.0 + u_time) * 0.01 ;
          
-
         // Wavy effect on hover
-        uv.y += sin(uv.y * 2.0 + u_time) * 0.01;
+        uv.y += sin(uv.y * 2.0 + u_time) * 0.02 ;
         
         vec4 color = texture2D(u_texture, uv);
         gl_FragColor = color;
@@ -73,6 +73,7 @@ export default function ShaderImage({ imageUrl, width, height }) {
 
     // Time uniform for animation
     const timeLoc = gl.getUniformLocation(program, "u_time")
+    const hoverLoc = gl.getUniformLocation(program, "u_hover")
     const startTime = Date.now()
 
     // Load image into texture
@@ -127,6 +128,16 @@ export default function ShaderImage({ imageUrl, width, height }) {
   return (
     <canvas
       ref={canvasRef}
+      // onMouseEnter={() => {
+      //   const gl = canvasRef.current.getContext("webgl")
+      //   const hoverLoc = gl.getUniformLocation(gl.getParameter(gl.CURRENT_PROGRAM), "u_hover")
+      //   gl.uniform1f(hoverLoc, 2.0)
+      // }}
+      // onMouseLeave={() => {
+      //   const gl = canvasRef.current.getContext("webgl")
+      //   const hoverLoc = gl.getUniformLocation(gl.getParameter(gl.CURRENT_PROGRAM), "u_hover")
+      //   gl.uniform1f(hoverLoc, 0.0)
+      // }}
       className="w-full h-auto object-cover object-center duration-700  hover:scale-105 transition-all duration-800  bg-blend-difference"
     />
   )

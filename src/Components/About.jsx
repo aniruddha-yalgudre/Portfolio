@@ -95,11 +95,11 @@ const About = () => {
               className="w-full md:w-2/3 flex flex-col md:flex-row md:justify-end mt-4 md:mt-0"
               onClick={(e) => e.stopPropagation()}
             >
-              <div className="hidden md:block md:w-[30%] md:h-full bg-black">
+              <div className="hidden md:block md:w-[30%] md:h-full">
                 {" "}
               </div>
 
-              <div className="vertical_container w-full md:w-[30%] bg-red-700 mb-8 md:mb-0 md:text-right">
+              <div className="vertical_container w-full md:w-[30%]  mb-8 md:mb-0 md:text-right">
                 <div className="socials-section ">
                   <h1 className="text-xs font-semibold uppercase  mb-6  md:mb-11 leading-none">
                     Say What's Up On <br />
@@ -121,7 +121,7 @@ const About = () => {
                 </div>
 
                 <div className="skills-section uppercase ">
-                  <h1 className="text-xs font-semibold uppercase  mt-6 md:my-3  leading-none bg-blue-400">
+                  <h1 className="text-xs font-semibold uppercase  mt-6 md:my-3  leading-none ">
                     STUFF I CODE WITH
                     <br />
                     <span className="font-semibold text-[10px] tracking-tight -ml-1 md:-mr-1">
@@ -129,8 +129,8 @@ const About = () => {
                     </span>
                   </h1>
 
-                  <div className="flex flex-row flex-wrap gap-2 md:flex-col md:gap-2 md:items-end  ">
-                    <h5 className="font-bold leading-none my-3 w-full">
+                  <div className="flex flex-row flex-wrap mt-6 gap-2 md:flex-col md:gap-2 md:items-end  ">
+                    <h5 className=" hidden font-bold leading-none my-3 w-full">
                       frontend development And tools{" "}
                     </h5>
                     {[
@@ -153,7 +153,7 @@ const About = () => {
                       <a key={index} className="mr-4 md:mr-0">
                         <Transformtext
                           textcontent={`【${skill}】`}
-                          classname={"uppercase leading-none -ml-1 md:-mr-1"}
+                          classname={"uppercase leading-none -ml-1 md:-mr-1 cursor-crosshair"}
                         />
                       </a>
                     ))}
@@ -193,7 +193,7 @@ const About = () => {
                 </div>
               </div> */}
 
-              <div className="hidden md:block md:w-1/2 md:h-full bg-blue-500"></div>
+              <div className="hidden md:block md:w-1/2 md:h-full "></div>
             </div>
           </div>
 

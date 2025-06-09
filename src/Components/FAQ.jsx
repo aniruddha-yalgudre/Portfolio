@@ -3,6 +3,7 @@ import Transformtext from "../Partials/Transformtext";
 import sketch from "../assets/arts.png";
 import gsap from "gsap";
 import { faqs } from "../utils/FAQs";
+import Slider from "../Partials/Slider";
 
 const FAQ = () => {
 
@@ -50,14 +51,17 @@ const FAQ = () => {
 
           {/* testmimoniels section */}
           <div className="w-full md:w-2/3 flex flex-col md:flex-row md:justify-end mt-4 md:mt-0">
-            <div className="relative w-full md:w-[60%] mb-8 bg-red-500 md:mb-0 md:text-right overflow-hidden">
-              <div className=" hidden  md:flex flex-col gap-1 bg-orange-400 items-start md:items-end md:justify-end ">
+            <div className="relative w-full md:w-[60%] mb-8  md:mb-0 md:text-right overflow-hidden">
+              <div className=" hidden  md:flex flex-col gap-1  items-start md:items-end md:justify-end ">
                 <div className="w-full md:w-full md:h-fit mt-4 md:mt-14 aspect-[4/5]">
-                  <img
+                  {/* <img
                     className="w-full h-full object-cover object-top"
                     src="https://i.pinimg.com/736x/9e/12/02/9e1202b0cbcdfc300c6938bd796be256.jpg"
                     alt="Profile"
-                  />
+                  /> */}
+
+                  <Slider/> 
+
                 </div>
 
                 {/* <div className="w-full h-60  md:w-full md:h-auto mt-4 md:mt-0">
@@ -87,7 +91,7 @@ const FAQ = () => {
                 />
               </div> */}
 
-              <div className=" hidden w-full h-64 md:block md:absolute bg-red-500  md:bottom-0 md:left-0 md:w-full md:h-fit mt-4 md:-mb-3 md:pl-4  ">
+              <div className=" hidden w-full h-64 md:block md:absolute   md:bottom-0 md:left-0 md:w-full md:h-fit mt-4 md:-mb-3 md:pl-4  ">
               </div>
             </div>
           </div>
@@ -157,7 +161,7 @@ const FAQ = () => {
                       </p>
                       <div className=" w-fit md:w-1/3 flex justify-end  mt-2 ">
                         <img
-                          className="h-full w-fit object-cover object-center bg-blend-difference "
+                          className="h-full w-fit object-cover object-center "
                           src={data.Image}
                           alt="covers"
                           srcSet={data.image}

@@ -34,6 +34,13 @@
 }
 
 
+
+input:-webkit-autofill {
+  box-shadow: 0 0 0 1000px var(--bg-color) inset !important;
+  -webkit-text-fill-color: var(--text-color) !important;
+}
+
+
 body::-webkit-slider-thumb{
  display: none;
 }
@@ -71,7 +78,6 @@ textarea::-ms-scrollbar-thumb {
 }
 
 
-
 /* CSS Boilerplate */
 * {
     box-sizing: border-box;
@@ -87,7 +93,6 @@ textarea::-ms-scrollbar-thumb {
 }
 
 
-
   body {
     font-family: 'Primary', sans-serif;
     line-height: 1.6;
@@ -98,7 +103,6 @@ textarea::-ms-scrollbar-thumb {
     overflow-y: auto;
   }
   
-
   .text-fill-transparent {
     -webkit-text-fill-color: transparent;
     -webkit-text-stroke: 8px solid black;
@@ -130,18 +134,30 @@ textarea::-ms-scrollbar-thumb {
 
 
 
+/* swiper slider */
 
+.swiper {
+  width: 100%;
+  height: 100%;
+}
 
+.swiper-slide {
+  text-align: center;
+  font-size: 18px;
+  background: #444;
 
+  /* Center slide text vertically */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 
-
-
-
-
-
-/* body { */
-  /* cursor: none; */
-/* } */
+.swiper-slide img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
 
 
 

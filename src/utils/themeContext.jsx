@@ -23,7 +23,7 @@ const ThemeProvider = ({children}) => {
     const allElements = [
       document.documentElement,
       document.body,
-      ...document.querySelectorAll('h1, h2, h4, h5, h6,input, [class*="bg"]:not(.footer)')
+      ...document.querySelectorAll('h1, h2, h4, h5, h6, [class*="bg"]:not(.footer)')
     ];
     
     // // Animate everything at once

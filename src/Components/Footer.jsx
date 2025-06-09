@@ -88,11 +88,11 @@ const Footer = () => {
   }, []);
 
   return (
-    <div className=" h-screen md:h-[100vh]  bg-red-400 w-full uppercase  md:pt-24  ">
-      <div className=" footer h-full w-full bg-blue-5 p-3  text-[10px] border-t-2 border-x-[1px] border-zinc-500 ">
+    <div className=" h-screen md:h-[100vh]   w-full uppercase md:py-[12%]  ">
+      <div className=" footer h-full w-full  p-3  text-[10px] border-t-2 border-x-[1px] border-zinc-500 ">
         
-        <div className=" part1 relative h-1/3 w-full  md:flex md:flex-row-reverse md:justify-between ">
-          <div className="relative  top h-1/2 w-full md:w-2/5 md:h-full  overflow-hidden bg-purple-0">
+        <div className=" part1 relative h-1/2 w-full  md:flex md:flex-row-reverse md:justify-end ">
+          <div className="relative  top h-1/2 w-full md:w-2/5 md:h-full  overflow-hidden ">
             <video
               ref={vidbgRef}
               className=" h-full w-full object-cover md:object-contain object-center scale-125 md:scale-[2.6] "
@@ -103,7 +103,7 @@ const Footer = () => {
               playsInline
             ></video>
           </div>
-          <div className=" bottom h-1/2 bg-red-00 w-full  md:w-3/5  md:h-full md:flex-col md:justify-center md:items-center">
+          <div className=" bottom h-1/2  w-full  md:w-3/5  md:h-full md:flex-col md:justify-center md:items-center">
             <p className=" text-center md:text-left md:w-[70%] ">
               I push the limits of web innovation, crafting immersive
               experiences with cutting-edge technologies like Webflow,
@@ -118,8 +118,8 @@ const Footer = () => {
         </div>
 
          
-        <div className=" part2 h-1/3 md:h-1/2 w-full bg-blue-70 ">
-          <div className="h-full w-full flex flex-col md:flex-row md:justify-between gap-2  md:gap-0  justify-center items-center text-center bg-green-70 border-t-2 border-x-[1px] border-zinc-500  rounded-b-[30px] overflow-hidden ">
+        <div className=" hidden part2 h-1/3 md:h-1/2 w-full  ">
+          <div className="h-full w-full flex flex-col md:flex-row md:justify-between gap-2  md:gap-0  justify-center items-center text-center  border-t-2 border-x-[1px] border-zinc-500  rounded-b-[30px] overflow-hidden ">
             
           <div className=" md:flex md:flex-col flex flex-col gap-2 md:gap-1  justify-center items-center text-center md:justify-start  md:pt-12 md:items-center h-full w-full md:border-r-[1px]  border-zinc-500  rounded-b-[30px]  md:w-1/3  ">    
             <div className="md:mb-2">
@@ -187,7 +187,7 @@ const Footer = () => {
             </div>
         </div>
 
-        <div className=" part3 h-1/4 w-full bg-blue-90 mt-0.5 md:hidden">
+        <div className=" hidden part3 h-1/4 w-full mt-0.5 md:hidden">
           <div className="  h-full w-full flex flex-col gap-2  justify-center items-center text-center bg-green-70 border-x-[1px]  border-zinc-500  rounded-r-[30px] rounded-l-[30px] ">
             <div className="">
               <h1 className=" mb-2 md:0">Let’s Be Internet Friends</h1>
@@ -209,6 +209,7 @@ const Footer = () => {
             </div>
           </div>
         </div>
+        
       </div>
     </div>
   );

@@ -7,7 +7,7 @@ import gsap from "gsap";
 
 const Interest = () => {
   return (
-    <div className="w-full h-full md:h-screen flex-shrink-0 p-3 text-[10px]">
+    <div className="w-full h-full md:h-screen flex-shrink-0 p-3 text-[10px] ">
       <div className="h-full w-full flex flex-col md:flex-row md:justify-between">
         {/* Left section - Profile and Socials */}
         <div className="w-full md:w-3/5 flex flex-col md:flex-row md:justify-between pt-14 md:pt-24">
@@ -53,7 +53,7 @@ const Interest = () => {
 
               <div className="flex flex-col  gap-2 items-start md:items-end  md:justify-end ">
                 <p class="uppercase ">
-                  Every sketch starts as a spark—an idea brought to life with
+                  Every sketch starts as a spark an idea brought to life with
                   pencil and paper. I love exploring shapes, shadows, and
                   stories in every stroke, turning simple lines into bold
                   visuals that speak louder than words.
@@ -144,7 +144,7 @@ const Interest = () => {
               </h5>
               <p>
                 From plot twists to perfect scores, movies are my late-night
-                therapy. I don’t just watch—I wander into frames, chasing mood,
+                therapy. I don’t just watch I wander into frames, chasing mood,
                 meaning, and motion.
               </p>
             </div>

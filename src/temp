@@ -1,177 +1,436 @@
-import React from "react";
+import { useContext, useEffect, useRef, useState } from "react"
+import LocomotiveScroll from "locomotive-scroll"
+import { Navbar, BottomNavbar } from "./Components/Navbar"
+import Loader from "./Partials/Loader"
+import Hero from "./Components/Hero"
+import Contact from "./Components/Contact"
+import Works from "./Components/Works"
+import About from "./Components/About"
+import FAQ from "./Components/FAQ"
+import Footer from "./Components/Footer"
+import Footer2 from "./Components/Footer2"
+import { ThemeContext } from "./utils/themeContext"
+import gsap from "gsap"
+import PageTransition from "./Partials/PageTransition"
+import _ from "lodash" // Import lodash for throttle
 
-const About = () => {
-  return (
-    <div className=" h-screen bg-green-600 w-full p-3 text-[10px]">
-      <div className=" h-full w-full bg-red-500 flex justify-between ">
+function App() {
+  const containerRef = useRef(null)
+  const locomotiveScrollRef = useRef(null)
+  const { isDarkMode } = useContext(ThemeContext);
 
-        <div className=" w-3/5 h-full bg-red-300 flex justify-between">
+  const [isMobile, setIsMobile] = useState(typeof window !== "undefined" ? window.innerWidth < 640 : false)
+  const [isTransitioning, setIsTransitioning] = useState(false)
+  const [activeSection, setActiveSection] = useState("hero")
+  const [locomotiveReady, setLocomotiveReady] = useState(false)
 
-              <div className=" w-1/3 h-full bg-blue-500">
-            <h1 className="text-3xl  font-Primary mb-8 md:mb-12 uppercase leading-none  ">
-              this is me
-            </h1>
+  // Enhanced mobile detection with debouncing
+  useEffect(() => {
+    let timeoutId
+    const handleResize = () => {
+      clearTimeout(timeoutId)
+      timeoutId = setTimeout(() => {
+        const newIsMobile = window.innerWidth < 640
+        if (newIsMobile !== isMobile) {
+          setIsMobile(newIsMobile)
+        }
+      }, 100)
+    }
 
-            <p className="text-xs  font-Primary mb-8 md:mb-12 uppercase leading-none  ">
-              who i am
-            </p>
-              </div>
+    window.addEventListener("resize", handleResize, { passive: true })
+    return () => {
+      clearTimeout(timeoutId)
+      window.removeEventListener("resize", handleResize)
+    }
+  }, [isMobile])
 
-              <div className="w-2/3 h-full flex  justify-end ">
-                 
-                 <div className=" w-[30%] h-full bg-black  ">
-                 jk
-                 </div>
-                 
-                 <div className=" w-[30%] h-full bg-blue-950 ">
-                 jk
-                 </div>
-                 
-                 <div className=" w-1/2 h-full bg-blue-500 ">
-                 jk
-                 </div>
+  // Mouse trail effect - Desktop only
+  useEffect(() => {
+    if (isMobile) return // Skip mouse trail on mobile
 
-                 
-              </div>
+    const svg = document.querySelector("svg.trail")
+    if (!svg) return
+    const path = svg.querySelector("path")
+    const points = []
+
+    const resizeVP = () => {
+      const ww = window.innerWidth
+      const wh = window.innerHeight
+      svg.setAttribute("width", ww)
+      svg.setAttribute("height", wh)
+      svg.setAttribute("viewBox", `0 0 ${ww} ${wh}`)
+    }
+
+    const move = (e) => {
+      if (!svg || !path) return
+      const x = e.clientX
+      const y = e.clientY
+      points.push({ x, y })
+      if (points.length > 8) points.shift()
+      const d = `M ${points.map((p) => `${p.x},${p.y}`).join(" L ")}`
+      gsap.to(path, {
+        attr: { d: d },
+        duration: 0.3,
+        ease: "power1",
+      })
+    }
+
+    resizeVP()
+    window.addEventListener("mousemove", move, { passive: true })
+    window.addEventListener("resize", resizeVP, { passive: true })
+
+    return () => {
+      window.removeEventListener("mousemove", move)
+      window.removeEventListener("resize", resizeVP)
+    }
+  }, [isMobile])
+
+  // Locomotive Scroll: Only initialize for desktop
+  useEffect(() => {
+    // Clean up existing instance
+    if (locomotiveScrollRef.current) {
+      locomotiveScrollRef.current.destroy()
+      locomotiveScrollRef.current = null
+      setLocomotiveReady(false)
+    }
+
+    // Only initialize LocomotiveScroll for desktop
+    if (!isMobile && containerRef.current) {
+      const timer = setTimeout(() => {
+        try {
+          locomotiveScrollRef.current = new LocomotiveScroll({
+            el: containerRef.current,
+            smooth: true,
+            smoothMobile: false,
+            lerp: 0.06,
+            multiplier: 0.7,
+            // direction: "vertical",
+            gestureDirection: "vertical",
+            touchMultiplier: 2,
+            firefoxMultiplier: 50,
+            class: "is-revealed",
+            initClass: "has-scroll-init",
+            getDirection: true,
+            getSpeed: true,
+            reloadOnContextChange: true,
+            tablet: {
+              smooth: false,
+              direction: "vertical",
+              gestureDirection: "vertical",
+            },
+            smartphone: {
+              smooth: false,
+              direction: "vertical",
+              gestureDirection: "vertical",
+            },
+          })
+
+          if (locomotiveScrollRef.current) {
+            setLocomotiveReady(true)
+            console.log("✅ Locomotive Scroll initialized successfully")
+
+            const handleScroll = (args) => {
+              requestAnimationFrame(() => {
+                const scrollY = args.scroll.y
+                const windowHeight = window.innerHeight
+                const sections = document.querySelectorAll("section[id]")
+
+                sections.forEach((section) => {
+                  const rect = section.getBoundingClientRect()
+                  const sectionId = section.id
+
+                  // Special handling for About section with horizontal scroll (Desktop only)
+                  // if (sectionId === "about") {
+                  //   const sectionTop = rect.top
+                  //   const sectionBottom = rect.bottom
+                  //   const sectionHeight = rect.height
+
+                  //   if (sectionTop <= windowHeight * 0.8 && sectionBottom >= windowHeight * 0.2) {
+                  //     setActiveSection(sectionId)
+                  //   }
+                  //   else if (sectionTop <= 0 && sectionBottom >= windowHeight * 0.8) {
+                  //     setActiveSection(sectionId)
+                  //   }
+                  //   else if (sectionHeight > windowHeight * 1.5 && sectionTop <= windowHeight && sectionBottom >= 0) {
+                  //     setActiveSection(sectionId)
+                  //   }
+                  // }
+                  // Special handling for Works section with horizontal scroll (Desktop only)
+                   if (sectionId === "works") {
+                    const sectionTop = rect.top
+                    const sectionBottom = rect.bottom
+
+                    if (sectionTop <= windowHeight * 0.5 && sectionBottom >= windowHeight * 0.5) {
+                      setActiveSection(sectionId)
+                    }
+                    else if (sectionTop <= 0 && sectionBottom >= windowHeight) {
+                      setActiveSection(sectionId)
+                    }
+                  } else {
+                    // Standard detection for regular sections
+                    const sectionTop = rect.top + scrollY
+                    const sectionHeight = rect.height
+                    const sectionCenter = sectionTop + sectionHeight / 2
+                    const currentScrollCenter = scrollY + windowHeight / 2
+
+                    if (
+                      currentScrollCenter >= sectionTop - 100 &&
+                      currentScrollCenter <= sectionTop + sectionHeight + 100
+                    ) {
+                      setActiveSection(sectionId)
+                    }
+                  }
+                })
+              })
+            }
+
+            const handleResize = () => {
+              clearTimeout(window.resizeTimeout)
+              window.resizeTimeout = setTimeout(() => {
+                requestAnimationFrame(() => {
+                  if (locomotiveScrollRef.current) {
+                    locomotiveScrollRef.current.update()
+                  }
+                  gsap.refresh()
+                })
+              }, 150)
+            }
+
+            const throttledHandleScroll = _.throttle(handleScroll, 100)
+            const throttledHandleResize = _.throttle(handleResize, 100)
+
+            locomotiveScrollRef.current.on("scroll", throttledHandleScroll)
+            window.addEventListener("resize", throttledHandleResize, { passive: true })
+
+            const cleanup = () => {
+              locomotiveScrollRef.current.off("scroll", throttledHandleScroll)
+              window.removeEventListener("resize", throttledHandleResize)
+              locomotiveScrollRef.current.destroy()
+              locomotiveScrollRef.current = null
+              setLocomotiveReady(false)
+            }
+
+            return cleanup
+          } else {
+            console.error("❌ Locomotive Scroll initialization failed")
+            setLocomotiveReady(false)
+          }
+        } catch (error) {
+          console.error("❌ Locomotive Scroll initialization failed:", error)
+          setLocomotiveReady(false)
+        }
+      }, 200)
+
+      return () => {
+        clearTimeout(timer)
+        if (locomotiveScrollRef.current) {
+          locomotiveScrollRef.current.destroy()
+          locomotiveScrollRef.current = null
+          setLocomotiveReady(false)
+        }
+      }
+    } else {
+      setLocomotiveReady(false)
+    }
+  }, [isMobile])
+
+  // Enhanced mobile scroll detection for section highlighting
+  useEffect(() => {
+    // Skip if not mobile
+    if (!isMobile) return;
+    
+    // Mobile-specific scroll handler for better section detection
+    const handleMobileScroll = () => {
+      requestAnimationFrame(() => {
+        const windowHeight = window.innerHeight;
+        const scrollY = window.scrollY;
+        const sections = document.querySelectorAll("section[id]");
         
-        </div>
-
-        <div className=" w-2/5 h-full bg-pink-400 flex "> 
-         
-         <div className=" w-2/3 bg-black "></div>
-         <div className="w-1/3 bg-slate-400 "></div>
-        
-        </div>
-
-      </div>
-    </div>
-  );
-};
-
-export default About;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<div className=" md:absolute top-0 left-0 h-[45vh] w-full  md:h-full  md:w-[60%] flex md:justify-start items-center ">
-  <h1 className=" text-[10vw] md:text-[7vw] font-['Secondary']  tracking-tighter leading-none   ">
-    let's do something epic shit
-    <span ref={tagRef} className="inline-block ml-[5%] ">
-      !!
-    </span>
-    {/* <span className="absolute  md:absolute h-[25vh] md:h-[35vh] mix-blend-difference w-fit left-[44%] top-[10%] -rotate-[19deg] text-fill-transparent  tracking-wide  md:top-[40%] md:left-1/2  -translate-x-1/2 translate-y-1/2  transform  md:-rotate-[25deg] ">  */}
-    {/* shit !!  */}
-    {/* <img className=" h-full w-full object-cover object-center" src={shitimg} alt="" srcset="" /> */}
-    {/* </span> */}
-  </h1>
-</div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-{/* Overlay Loader - Desktop */}
-      <div className=" hidden md:block top-0 left-0  h-screen w-screen z-[999]">        
-        <div className=" top-1/2 left-1/2 -translate-x-1/2  -translate-y-1/2 w-full h-full">
-
-          <div className="text-[10px] leading-none flex justify-between items-start px-3">
-        
-            <div className=" w-3/5  flex justify-between">
-              {/* Date Display */}
-              <div className="logo">
-                <div className="">
-                  <DateDisplay />
-                </div>
-              </div>
-
-              {/* Time & Location */}
-              <div className="links-part flex flex-col items-end leading-none mr-[17.67vw]">
-                <p>{currentTime} IST</p>
-                <div className="location flex items-end gap-2">
-                  <p>12.9351N, 80.2310E </p>
-                </div>
-              </div>
-            </div>
-
-            <div className=" w-2/5 flex justify-between">
-              {/* Scrambled Text Animation */}
-              <div className="s_last-part scrambleText  relative  mr-4">
-                <p className="text-left leading-none tracking-tight">
-                  <span className="cursor-pointer inline-block h-3 w-fit saturate-200 brightness-100 text-[11px] opacity-100 leading-none">
-                    Staap <sup className=" text-[5px] -top-2 -left-0.5 ">®</sup>
-                  </span>
-                  <br />
-                  <span className=" cursor-pointer">
-                    Stories of Art and Architectural Practice
-                  </span>
-                </p>
-              </div>
-
-              {/* Description Text */}
-              <div className="relative  text-justify text-[9px] w-[27.3%] leading-none ">
-                <p className="font-[500] w-full text-right ">
-                  “Stories of Art”: the art of telling a narrative through
-                  design, and “Practice”: perfecting it through a repetitive
-                  pattern of learning and creating.
-                </p>
-              </div>
-            </div>
-          </div>
-
-        </div>
-      </div>
-
-
-
-
-
-
-
-
-
-
-
-      import resumeimg from "../assets/Software_Dev_Aniruddha_Resume_2025.pdf";
-// import resumeimg from "../assets/Resume.webp";
-
-const Resume = () => {
-  return (
-    <div className="h-screen md:min-h-[150dvh] w-full uppercase p-3 bg-slate-500">
-       <div className="h-full w-full bg-white flex items-center p-20">
-              
-              <div className="resume-container relative h-full w-[60%] bg-red-400">
-      {/* <iframe src={resumeimg} frameborder="0" className=" h-full w-full "></iframe> */}
-              </div>
-       </div>
+        sections.forEach((section) => {
+          const rect = section.getBoundingClientRect();
+          const sectionId = section.id;
+          
+          // Special handling for About and Works sections on mobile
+          if (sectionId === "about" || sectionId === "works") {
+            const sectionTop = rect.top;
+            const sectionBottom = rect.bottom;
             
-    </div>
-  );
-};
+            // More aggressive detection for these sections on mobile
+            if (
+              (sectionTop <= windowHeight * 0.7 && sectionBottom >= windowHeight * 0.3) || 
+              (sectionTop <= 0 && sectionBottom >= windowHeight * 0.5) ||
+              (sectionTop <= windowHeight * 0.5 && sectionBottom >= 0)
+            ) {
+              setActiveSection(sectionId);
+            }
+          }
+        });
+      });
+    };
+    
+    // Add scroll listener for mobile
+    window.addEventListener("scroll", handleMobileScroll, { passive: true });
+    
+    // Initial check
+    handleMobileScroll();
+    
+    return () => {
+      window.removeEventListener("scroll", handleMobileScroll);
+    };
+  }, [isMobile]);
 
-export default Resume;
+  // Intersection Observer for active section tracking
+  useEffect(() => {
+    const sections = document.querySelectorAll("section[id]")
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          const sectionId = entry.target.id
+          
+          if (isMobile) {
+            // Enhanced mobile detection for About and Works sections
+            if (sectionId === "about" || sectionId === "works") {
+              // Lower threshold for these sections on mobile
+              if (entry.isIntersecting && entry.intersectionRatio > 0.1) {
+                setActiveSection(sectionId)
+              }
+            } else {
+              // Standard detection for other sections
+              if (entry.isIntersecting && entry.intersectionRatio > 0.3) {
+                setActiveSection(sectionId)
+              }
+            }
+          } else {
+            // Desktop detection with special handling for horizontal scroll sections
+            if (sectionId === "about" || sectionId === "works") {
+              if (entry.isIntersecting && entry.intersectionRatio > 0.05) {
+                setActiveSection(sectionId)
+              }
+            } else {
+              if (entry.isIntersecting && entry.intersectionRatio > 0.3) {
+                setActiveSection(sectionId)
+              }
+            }
+          }
+        })
+      },
+      {
+        threshold: isMobile ? [0.1, 0.2, 0.3, 0.5] : [0.05, 0.1, 0.3, 0.5, 0.7],
+        rootMargin: isMobile ? "-5% 0px -5% 0px" : "-10% 0px -10% 0px",
+      },
+    )
+
+    sections.forEach((section) => observer.observe(section))
+
+    return () => {
+      sections.forEach((section) => observer.unobserve(section))
+    }
+  }, [isMobile])
+
+  // Handle navigation clicks
+  const handleNavClick = (id) => {
+    if (isTransitioning) return
+
+    const target = document.getElementById(id)
+    if (!target) {
+      console.error(`❌ Target section "${id}" not found`)
+      return
+    }
+
+    console.log(`🎯 Navigating to: ${id}`)
+    setIsTransitioning(true)
+    setActiveSection(id)
+
+    // Start page transition
+    setTimeout(() => {
+      // Always allow native scroll (desktop and mobile), but use Locomotive if available
+      if (!locomotiveReady || !locomotiveScrollRef.current || isMobile) {
+        // Fallback: Use native scroll
+        console.log("📱 Using native scroll")
+        target.scrollIntoView({ behavior: "smooth", block: "start" })
+      } else {
+        // Desktop: Use Locomotive Scroll
+        console.log("🖥️ Using Locomotive Scroll")
+        try {
+          locomotiveScrollRef.current.scrollTo(target, {
+            duration: 1200,
+            easing: [0.25, 0.0, 0.35, 1.0],
+            offset: 0,
+          })
+          console.log("✅ Locomotive scroll executed")
+        } catch (error) {
+          console.error("❌ Locomotive scroll failed, using fallback:", error)
+          target.scrollIntoView({ behavior: "smooth", block: "start" })
+        }
+      }
+      setIsTransitioning(false)
+    }, 1000)
+  }
+
+  // Only one scrollbar: let the body scroll, don't set overflow/height on the container
+  return (
+    <div
+      ref={containerRef}
+      data-scroll-container
+      className="w-full"
+      style={{
+        overflow: isMobile ? "auto" : "hidden",
+        height: isMobile ? "auto" : "100%",
+        WebkitOverflowScrolling: "touch",
+      }}
+    >
+      <svg
+        className="hidden trail top-0 left-0 md:block fixed w-full pointer-events-none transition-all duration-100 z-[998]"
+        viewBox="0 0 40 40"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="1.5px"
+      >
+        <path d="M 10 10 L 20 20 " />
+      </svg>
+     
+      {/* <Loader/> */}
+      <Navbar onNavClick={handleNavClick} activeSection={activeSection} />
+      <PageTransition isActive={isTransitioning} />
+
+      {/* Debug info - uncomment for testing */}
+      
+      {/* {process.env.NODE_ENV === "development" && (
+        <div className="fixed top-20 right-4 z-[1000] bg-black text-white p-2 text-xs">
+          <div>Mobile: {isMobile ? "Yes" : "No"}</div>
+          <div>Active Section: {activeSection}</div>
+        </div>
+      )} */}
+
+
+      <section id="hero" data-scroll-section className="min-h-screen w-full">
+        <Hero />
+      </section>
+
+      <section id="works" data-scroll-section className="min-h-screen w-full">
+        <Works />
+      </section>
+
+      <section id="about" data-scroll-section className="min-h-screen w-full">
+        <About />
+      </section>
+
+      <section id="faq" data-scroll-section className="min-h-screen w-full">
+        <FAQ />
+      </section>
+
+      <section id="connect" data-scroll-section className="min-h-screen w-full">
+        <Contact parentContainerRef={containerRef} />
+      </section>
+
+      <section data-scroll-section className="relative min-h-screen w-full">
+        <Footer2 />
+      </section>
+
+      <BottomNavbar />
+    </div>
+  )
+}
+
+export default App
