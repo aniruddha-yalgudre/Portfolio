@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useRef } from "react";
 import Transformtext from "../Partials/Transformtext";
 import signw from "../assets/signature.webp";
-import { ThemeContext } from "../utils/themeContext";
+import {useTheme } from "../utils/themeContext";
 
 // import privacyPage from "/Privacy-Policy.html";
 // import termsConditionsPage from "/Terms-Conditions.html";
@@ -97,7 +97,7 @@ const Footer2 = () => {
 
   gsap.registerPlugin(ScrollTrigger);
   
-  const { isDarkMode } = useContext(ThemeContext);
+  const { isDarkMode } = useTheme();
  
  const ContainerRef = useRef(null);
  const dragContainerRef = useRef(null);
@@ -159,9 +159,9 @@ const Footer2 = () => {
   
 
   return (
-    <div  className="w-full h-full md:h-screen  flex-shrink-0 p-3 py-10 md:pb-12  text-[10px] uppercase  overflow-hidden  ">
+    <div  className="w-full h-full md:h-screen flex-shrink-0 p-3 pt-36 md:py-0  md:pb-12  text-[10px] uppercase  overflow-hidden  ">
       
-      <div ref={ContainerRef}  className=" relative  h-full w-full flex flex-col md:flex-row md:justify-between md:items-end gap-2 md:gap-0 overflow-hidden  ">
+      <div ref={ContainerRef}  className=" relative  h-full w-full flex flex-col justify-between items-end md:flex-row md:justify-between md:items-end gap-2 md:gap-0 overflow-hidden  ">
        
        
         {/* Left section - Profile and Socials */}

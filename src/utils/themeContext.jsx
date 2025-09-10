@@ -1,46 +1,46 @@
-import { createContext, useState, useEffect } from 'react';
+// themeContext.jsx
+import { createContext, useState, useEffect, useContext } from 'react';
 import { gsap } from 'gsap';
 
-const ThemeContext = createContext();
+// Define context
+const ThemeContext = createContext(null);
 
-const ThemeProvider = ({children}) => {
-  
+// Hook to access context
+export const useTheme = () => useContext(ThemeContext);
+
+// Provider component
+export const ThemeProvider = ({ children }) => {
   const [isDarkMode, setIsDarkMode] = useState(false);
 
   useEffect(() => {
-    // Apply dark/light mode to entire document
     document.documentElement.classList.toggle('dark-mode', isDarkMode);
     document.documentElement.classList.toggle('light-mode', !isDarkMode);
 
-    // Update CSS variables for global theming
-    // const newBgColor = isDarkMode ? '#1b1b1b' : '#E0E0E0';
-
     const newBgColor = isDarkMode ? '#1E1E1E' : '#E0E0E0';
     const newTextColor = isDarkMode ? '#dadada' : '#393939';
-     
-    
-    // Select all elements that need to be animated
+
+    document.documentElement.style.setProperty('--text-color', newTextColor);
+    document.documentElement.style.setProperty('--bg-color', newBgColor);
+
+    // Remove selection styling from here as it's now in index.css
+
     const allElements = [
       document.documentElement,
       document.body,
       ...document.querySelectorAll('h1, h2, h4, h5, h6, [class*="bg"]:not(.footer)')
     ];
-    
-    // // Animate everything at once
+        // const allElements = [document.documentElement, document.body];
+
     gsap.to(allElements, {
       duration: 1.2,
       backgroundColor: newBgColor,
       color: newTextColor,
-      ease: "power2.inOut",
-      stagger:0,
+      ease: 'power2.inOut',
+      stagger: 0,
     });
-    
   }, [isDarkMode]);
-  
 
-  const toggleTheme = () => {
-    setIsDarkMode(!isDarkMode);
-  };
+  const toggleTheme = () => setIsDarkMode((prev) => !prev);
 
   return (
     <ThemeContext.Provider value={{ isDarkMode, toggleTheme }}>
@@ -48,5 +48,3 @@ const ThemeProvider = ({children}) => {
     </ThemeContext.Provider>
   );
 };
-
-export { ThemeProvider, ThemeContext };

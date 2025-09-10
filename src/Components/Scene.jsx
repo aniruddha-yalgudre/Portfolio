@@ -6,18 +6,15 @@ import * as THREE from "three"
 import img from "../assets/Frame 1.png"
 import pic from "../assets/model.webp"
 
-// Memoized loading component
 const LoadingFallback = () => (
-  <div className="w-full h-full flex items-center justify-center ">
-    <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-gray-900"></div>
+  <div className="w-full h-full flex items-center justify-center">
+    <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-foreground"></div>
   </div>
 )
 
-export default function Scene() {
-  
+export default function Scene({onNavClick}) {
   const [isMobile, setIsMobile] = useState(false)
 
-  // Optimized resize handler with debouncing
   useEffect(() => {
     let timeoutId
     const onResize = () => {
@@ -35,7 +32,6 @@ export default function Scene() {
     }
   }, [])
 
-  // Memoized camera settings
   const cameraSettings = useMemo(
     () => ({
       fov: isMobile ? 75 : 65,
@@ -44,7 +40,6 @@ export default function Scene() {
     [isMobile],
   )
 
-  // Memoized GL settings
   const glSettings = useMemo(
     () => ({
       antialias: true,
@@ -64,9 +59,9 @@ export default function Scene() {
           camera={cameraSettings}
           gl={glSettings}
           dpr={[1, 2]}
-          frameloop="demand" // Only render when needed
+          frameloop="demand"
         >
-          <SceneContent isMobile={isMobile} />
+          <SceneContent isMobile={isMobile} onNavClick={onNavClick} />
           <Preload all />
         </Canvas>
       </Suspense>
@@ -74,20 +69,19 @@ export default function Scene() {
   )
 }
 
-function SceneContent({ isMobile }) {
+function SceneContent({ isMobile, onNavClick }) {
   const cyl = useRef(null)
   const [isHovered, setIsHovered] = useState(false)
   const [isDragging, setIsDragging] = useState(false)
-  const [dragStartX, setDragStartX] = useState(0)
-  const [rotationY, setRotationY] = useState(0)
+  const [lastPointerX, setLastPointerX] = useState(0)
+  const [targetRotationY, setTargetRotationY] = useState(0)
+  const [velocity, setVelocity] = useState(0)
   const { gl, invalidate } = useThree()
 
-  // Preload and configure textures
   const tex = useTexture(img)
   const modelTex = useTexture(pic)
 
-  // Memoized texture configuration
-  useMemo(() => {
+  useEffect(() => {
     if (tex) {
       tex.colorSpace = THREE.SRGBColorSpace
       tex.minFilter = THREE.LinearFilter
@@ -98,7 +92,7 @@ function SceneContent({ isMobile }) {
     }
   }, [tex, gl])
 
-  useMemo(() => {
+  useEffect(() => {
     if (modelTex) {
       modelTex.colorSpace = THREE.SRGBColorSpace
       modelTex.generateMipmaps = false
@@ -109,7 +103,6 @@ function SceneContent({ isMobile }) {
     }
   }, [modelTex, gl])
 
-  // Memoized geometry arguments
   const cylinderArgs = useMemo(
     () => (isMobile ? [1.78, 1.78, 1.6, 100, 100, true] : [1.8, 1.8, 1.55, 120, 120, true]),
     [isMobile],
@@ -117,31 +110,45 @@ function SceneContent({ isMobile }) {
 
   const planeArgs = useMemo(() => (isMobile ? [3.15, 6.3] : [3.3, 6.6]), [isMobile])
 
-  // Memoized positions
   const meshPosition = useMemo(() => (isMobile ? [0, -1.4, -0.3] : [0, -0.4, -0.2]), [isMobile])
 
   const cylinderPosition = useMemo(() => (isMobile ? [0, -1.6, 0] : [0, -0.9, 0]), [isMobile])
 
   const cameraPosition = useMemo(() => [0, 0, 5.2], [])
 
-  // Optimized animation loop
+  const getPointerX = useCallback((e) => {
+    return e.clientX || (e.touches && e.touches[0]?.clientX) || 0
+  }, [])
+
   useFrame((_, dt) => {
     if (!cyl.current) return
 
     let needsUpdate = false
 
-    // Auto-rotation when not dragging
-    if (!isDragging) {
-      cyl.current.rotation.y += dt * 0.2
+    if (isDragging) {
+      const rotationDiff = targetRotationY - cyl.current.rotation.y
+      cyl.current.rotation.y += rotationDiff * 0.3
       needsUpdate = true
+    } else {
+      if (Math.abs(velocity) > 0.001) {
+        setTargetRotationY(prev => prev + velocity * dt)
+        cyl.current.rotation.y += velocity * dt
+        setVelocity(prev => prev * 0.96)
+        needsUpdate = true
+      } else {
+        const autoRotation = dt * 0.25
+        setTargetRotationY(prev => prev + autoRotation)
+        cyl.current.rotation.y += autoRotation
+        needsUpdate = true
+      }
     }
 
-    // Scale animation
-    const targetScale = isHovered || isDragging ? 1.1 : 1
+    const targetScale = isHovered ? 1.13 : isDragging ? THREE.MathUtils.lerp(1, 1.1, Math.min(1, dt * 100)) : THREE.MathUtils.lerp(1.1, 1, Math.min(1, dt * 50))
+
     const currentScale = cyl.current.scale.x
 
     if (Math.abs(currentScale - targetScale) > 0.001) {
-      const newScale = THREE.MathUtils.lerp(currentScale, targetScale, 0.006)
+      const newScale = THREE.MathUtils.lerp(currentScale, targetScale, 0.1)
       cyl.current.scale.setScalar(newScale)
       needsUpdate = true
     }
@@ -151,65 +158,76 @@ function SceneContent({ isMobile }) {
     }
   })
 
-  // Optimized event handlers with useCallback
   const handlePointerDown = useCallback(
     (e) => {
-      if (isMobile) return
+      e.stopPropagation()
       setIsDragging(true)
-      setDragStartX(e.clientX || e.touches?.[0]?.clientX || 0)
+      setVelocity(0)
+      const pointerX = getPointerX(e)
+      setLastPointerX(pointerX)
+      
+      if (cyl.current) {
+        setTargetRotationY(cyl.current.rotation.y)
+      }
+      
       invalidate()
     },
-    [isMobile, invalidate],
+    [getPointerX, invalidate],
   )
 
   const handlePointerMove = useCallback(
     (e) => {
-      if (!isDragging || isMobile || !cyl.current) return
+      if (!isDragging || !cyl.current) return
 
-      const deltaX = (e.clientX || e.touches?.[0]?.clientX || 0) - dragStartX
-      cyl.current.rotation.y = THREE.MathUtils.lerp(cyl.current.rotation.y, rotationY + deltaX * 0.01, 0.3)
+      const currentPointerX = getPointerX(e)
+      const deltaX = currentPointerX - lastPointerX
+      const rotationSpeed = isMobile ? 0.006 : 0.01
+      
+      const newTargetRotation = targetRotationY + deltaX * rotationSpeed
+      setTargetRotationY(newTargetRotation)
+      
+      setVelocity(deltaX * rotationSpeed * 0.3)
+      
+      setLastPointerX(currentPointerX)
       invalidate()
     },
-    [isDragging, isMobile, dragStartX, rotationY, invalidate],
+    [isDragging, lastPointerX, targetRotationY, isMobile, getPointerX, invalidate],
   )
 
   const handlePointerUp = useCallback(() => {
-    if (isMobile) return
-
-    if (cyl.current) {
-      setRotationY(cyl.current.rotation.y)
-    }
     setIsDragging(false)
     invalidate()
-  }, [isMobile, invalidate])
+  }, [invalidate])
 
   const handlePointerOver = useCallback(() => {
-    if (!isMobile) {
-      setIsHovered(true)
-      invalidate()
-    }
-  }, [isMobile, invalidate])
+    setIsHovered(true)
+    invalidate()
+  }, [invalidate])
 
   const handlePointerOut = useCallback(() => {
     setIsHovered(false)
     invalidate()
   }, [invalidate])
 
-  // Optimized event listeners
   useEffect(() => {
-    if (isMobile) return
-
-    const options = { passive: true }
-    window.addEventListener("pointermove", handlePointerMove, options)
-    window.addEventListener("pointerup", handlePointerUp, options)
+    const options = { passive: false }
+    
+    const moveHandler = (e) => handlePointerMove(e)
+    const upHandler = (e) => handlePointerUp(e)
+    
+    window.addEventListener("mousemove", moveHandler, options)
+    window.addEventListener("mouseup", upHandler, options)
+    window.addEventListener("touchmove", moveHandler, options)
+    window.addEventListener("touchend", upHandler, options)
 
     return () => {
-      window.removeEventListener("pointermove", handlePointerMove)
-      window.removeEventListener("pointerup", handlePointerUp)
+      window.removeEventListener("mousemove", moveHandler)
+      window.removeEventListener("mouseup", upHandler)
+      window.removeEventListener("touchmove", moveHandler)
+      window.removeEventListener("touchend", upHandler)
     }
-  }, [handlePointerMove, handlePointerUp, isMobile])
+  }, [handlePointerMove, handlePointerUp])
 
-  // Memoized materials
   const planeMaterial = useMemo(() => <meshBasicMaterial visible={true} map={modelTex} alphaTest={0.01} />, [modelTex])
 
   const cylinderMaterial = useMemo(
@@ -233,10 +251,10 @@ function SceneContent({ isMobile }) {
           ref={cyl}
           rotation={[0, 0, 0.3]}
           position={cylinderPosition}
+          onClick={() => onNavClick("works")}
           onPointerOver={handlePointerOver}
           onPointerOut={handlePointerOut}
           onPointerDown={handlePointerDown}
-          onTouchStart={handlePointerDown}
         >
           <cylinderGeometry args={cylinderArgs} />
           {cylinderMaterial}

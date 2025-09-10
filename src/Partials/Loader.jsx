@@ -16,10 +16,7 @@ const Loader = () => {
     const handleResize = () => setIsMobile(window.innerWidth < 640)
     window.addEventListener("resize", handleResize)
     return () => window.removeEventListener("resize", handleResize)
-  }, [])
-
-
-
+  }, []);
 
 
   useEffect(() => {
@@ -42,7 +39,7 @@ const Loader = () => {
     window.addEventListener("touchmove", preventScroll, { passive: false });
 
     let count = 0;
-    const interval = setInterval(() => {
+    const interval = setInterval(() =>{
       count = Math.min(count + 1, 100);
       setCounter(count.toString().padStart(2, "0"));
 
@@ -53,7 +50,7 @@ const Loader = () => {
 
       if (count === 100) {
         clearInterval(interval);
-
+         
         const tl = gsap.timeline();
 
         tl.to(counterRef.current, {

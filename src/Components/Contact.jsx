@@ -2,7 +2,7 @@ import React, { useRef, useState, useEffect, forwardRef, useContext } from "reac
 import Transformtext from "../Partials/Transformtext";
 import { useForm, ValidationError } from "@formspree/react";
 import gsap from "gsap";
-import { ThemeContext } from "../utils/themeContext";
+import {useTheme } from "../utils/themeContext";
 
 const Contact = () => {
   const FormRef = useRef(null);
@@ -10,7 +10,7 @@ const Contact = () => {
   const [errorMsg, setErrorMsg] = useState("");
   const [state, handleSubmit] = useForm("mblopobo");
 
-  const { isDarkMode } = useContext(ThemeContext);
+  const { isDarkMode } = useTheme();
   const [isMobile, setIsMobile] = useState(window.innerWidth < 640);
 
   // Handle window resize

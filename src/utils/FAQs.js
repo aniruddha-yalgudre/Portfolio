@@ -15,6 +15,16 @@ export const faqs = [
       Image:"https://i.pinimg.com/736x/f2/4b/1c/f24b1cd8e18dfeddc226f92b65e6d15e.jpg"
     },
     {
+      question: "What does a website cost?",
+      answer: "It all depends on what you need. The price depends on the scope and specific requirements of your project. I would be happy to make you an individual offer. You can directly Book a call or write me an email: aniruddhayalgudre@gmail.com",
+      Image: "https://i.pinimg.com/736x/f2/4b/1c/f24b1cd8e18dfeddc226f92b65e6d15e.jpg"
+    },
+    {
+      question: "How long does a Project take ?",
+      answer: "his cannot be said across the board, since it ultimately depends on the effort and the specific requirements. From the experience of my previous customer projects, this is about 4-5 weeks.",
+      Image: "https://i.pinimg.com/736x/f2/4b/1c/f24b1cd8e18dfeddc226f92b65e6d15e.jpg"
+    },
+    {
       question: "Where will my website be hosted after development ?",
       answer: "That depends on your needs. I commonly use platforms like Vercel, Netlify, Firebase, or even traditional hosting and I’ll help you choose what’s best for performance, budget, and scalability.",
       Image:"https://i.pinimg.com/736x/2c/31/92/2c319221e83bba6ae2453fb8c678f6a3.jpg"

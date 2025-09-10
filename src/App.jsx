@@ -9,16 +9,18 @@ import About from "./Components/About"
 import FAQ from "./Components/FAQ"
 import Footer from "./Components/Footer"
 import Footer2 from "./Components/Footer2"
-import { ThemeContext } from "./utils/themeContext"
+import {useTheme } from "./utils/themeContext"
 import gsap from "gsap"
 import PageTransition from "./Partials/PageTransition"
 import _ from "lodash"
+import { Route, Routes } from "react-router-dom"
 
+import ProjectDetail from "./Components/ProjectDetail"
 
 function App() {
   const containerRef = useRef(null)
   const locomotiveScrollRef = useRef(null)
-  const { isDarkMode } = useContext(ThemeContext);
+  const { isDarkMode } = useTheme();
 
   const [isMobile, setIsMobile] = useState(typeof window !== "undefined" ? window.innerWidth < 640 : false)
   const [isTransitioning, setIsTransitioning] = useState(false)
@@ -233,11 +235,11 @@ function App() {
 
   // Only one scrollbar: let the body scroll, don't set overflow/height on the container
   return (
+    <>
     <div
       ref={containerRef}
       data-scroll-container
       className="w-full "
-      // Remove style prop that sets overflow/height to avoid double scrollbars
     >
       <svg
         className="hidden trail top-0 left-0 md:block fixed w-full pointer-events-none transition-all duration-100 z-[998]"
@@ -265,12 +267,17 @@ function App() {
 
 
       <section id="hero" data-scroll-section className="min-h-screen">
-        <Hero />
+        <Hero onNavClick={handleNavClick} />
+        {/* <ProjectDetail/> */}
       </section>
 
       <section id="works" data-scroll-section className="min-h-screen">
         <Works />
       </section>
+      
+      {/* <section id="works" data-scroll-section className="min-h-screen"> */}
+        {/* <ProjectDetail /> */}
+      {/* </section> */}
 
       <section id="about" data-scroll-section className="min-h-screen">
         <About />
@@ -289,7 +296,13 @@ function App() {
       </section>
 
       <BottomNavbar />
+
+      {/* <Routes>
+        <Route path="/work/:projectId" element={ <ProjectDetail/>}/>
+      </Routes> */}
+
     </div>
+      </>
   )
 }
 

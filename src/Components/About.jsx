@@ -41,6 +41,7 @@ const About = () => {
           trigger: containerRef.current,
           pin: true,
           scrub: 0.1,
+          // markers:true,
           start: "top top",
           end: () =>
             `+=${containerRef.current.offsetWidth * (sections.length - 1)}`,

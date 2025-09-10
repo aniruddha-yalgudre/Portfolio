@@ -88,8 +88,8 @@ textarea::-ms-scrollbar-thumb {
 
 
 ::selection{
-  background: #000;
-  color: whitesmoke;
+  background: var(--text-color);
+  color: var(--bg-color);
 }
 
 

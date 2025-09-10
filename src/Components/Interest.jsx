@@ -39,11 +39,11 @@ const Interest = () => {
           {/* art section */}
           <div className=" w-full md:w-2/3 flex flex-col md:flex-row md:justify-end mt-4 md:mt-0">
             <div className="  md:block md:w-[30%] md:h-full bg-black">
-              <p className=" text-xl ">{/* itererest page title */}</p>
+              {/* <p className=" text-xl "> itererest page title </p> */}
             </div>
 
-            <div className=" relative w-full md:w-[30%] mb-8 bg-red-500 md:mb-0 md:text-right overflow-hidden">
-              <h1 className="text-xs  font-semibold uppercase  mb-4 md:mb-14 leading-none">
+            <div className=" relative w-full md:w-[30%] mb-8  md:mb-0 md:text-right overflow-hidden">
+              <h1 className="text-xs font-semibold uppercase  mb-4 md:mb-14 leading-none">
                 Sketching My Story
                 <br />{" "}
                 {/* <span className=" font-semibold text-[10px] tracking-tight -mr-1 "> */}
@@ -59,15 +59,16 @@ const Interest = () => {
                   visuals that speak louder than words.
                 </p>
 
-                <div className="w-full h-[22vh]  scale-150  md:scale-[2]  md:absolute  md:bottom-20 md:right-0 md:w-full md:h-auto mt-10 md:mt-0 ">
+                <div className="w-full h-[22vh] scale-150 md:scale-[2]  md:absolute  md:bottom-20 md:right-0 md:w-full md:h-auto mt-10 md:mt-0  ">
+                  
                   <img
-                    className="h-full w-full object-contain  md:object-cover object-center  -rotate-360  md:-rotate-90 transform "
+                    className="h-full w-full object-contain  scale-x-110  md:object-cover object-center  -rotate-360  md:-rotate-90 transform "
                     src={sketch}
                     alt="sketch"
                     srcSet={sketch}
-                    loading="lazy"
-                  />
-                </div>
+                    loading="lazy"/>
+                  </div>
+                    
               </div>
             </div>
 

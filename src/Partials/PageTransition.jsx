@@ -1,6 +1,5 @@
 import { motion, AnimatePresence } from "framer-motion"
-import { useContext } from "react";
-import { ThemeContext } from "../utils/themeContext";
+import {useTheme } from "../utils/themeContext";
 
 
 const overlayVariants = {
@@ -10,8 +9,8 @@ const overlayVariants = {
 }
 
 const PageTransition = ({ isActive }) => {
-  const { isDarkMode } = useContext(ThemeContext);
-  
+
+  const { isDarkMode } = useTheme();
   return (
     <AnimatePresence mode="wait">
       {isActive && (

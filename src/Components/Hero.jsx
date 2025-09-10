@@ -4,7 +4,7 @@ import CircularText from "../Partials/CircularText";
 import ScrollVelocity from "../Partials/ScrollVelocity";
 
 
-const Hero = () => {
+const Hero = ({onNavClick}) => {
   const [currentTime, setCurrentTime] = useState(
     new Date().toLocaleTimeString()
   );
@@ -86,7 +86,8 @@ const Hero = () => {
       </div>
 
       {/* laoctaion for mobile version */}
-      <div className="absolute z-50 right-3 w-fit top-[20vh] rounded-full   md:hidden ">
+      
+      {/* <div className="absolute z-50 right-3 w-fit top-[20vh] rounded-full   md:hidden ">
         <div data-scroll-container className=" ">
           <CircularText
             text="LOCATION BASED IN  PUNE|INDIA "
@@ -103,10 +104,10 @@ const Hero = () => {
             ></h1>
           </div>
         </div>
-      </div>
+      </div> */}
 
       {/* 3D Scene Layer */}
-      <Scene />
+      <Scene onNavClick={onNavClick} />
     </div>
   );
 };

@@ -1,11 +1,20 @@
-import { useEffect, useState } from "react"
+import { useEffect, useState, useRef } from "react"
 import { projectsData } from "../utils/projectsData"
 import ShaderImage from "../Partials/ShaderImage"
+import { gsap } from "gsap"
+import { ScrollTrigger } from "gsap/ScrollTrigger"
+
+
+
+
+// Register GSAP plugin
+gsap.registerPlugin(ScrollTrigger)
+
 
 const Works = ({ containerRef }) => {
   
-  const [hoveredProject, setHoveredProject] = useState(null)
-  
+  const mobileCardsRef = useRef([])  
+  const [hoveredProject, setHoveredProject] = useState(null);
   const [isMobile, setIsMobile] = useState(window.innerWidth < 640);
 
   // Handle window resize
@@ -15,6 +24,48 @@ const Works = ({ containerRef }) => {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
+
+
+   // Mobile scroll animations
+  //  useEffect(() => {
+  //   if (isMobile && mobileCardsRef.current.length > 0) {
+  //     // Clear previous animations
+  //     ScrollTrigger.getAll().forEach(trigger => trigger.kill());
+
+  //     mobileCardsRef.current.forEach((card, index) => {
+  //       if (card) {
+  //         const isEven = index % 2 === 0;
+  //         const originalWidth = isEven ? 'auto' : '60%';
+          
+  //         // Set initial state
+  //         gsap.set(card, { 
+  //           width: 0,
+  //           transformOrigin: isEven ? 'left center' : 'right center'
+  //         });
+
+  //         // Create scroll trigger animation
+  //         ScrollTrigger.create({
+  //           trigger: card,
+  //           markers:true,
+  //           start: "top 80%",
+  //           onEnter: () => {
+  //             gsap.to(card, {
+  //               width: originalWidth,
+  //               duration: 0.8,
+  //               ease: "power2.out"
+  //             });
+  //           }
+  //         });
+  //       }
+  //     });
+
+  //     return () => {
+  //       ScrollTrigger.getAll().forEach(trigger => trigger.kill());
+  //     };
+  //   }
+  // }, [isMobile, projectsData.length]);
+
+
   
   return (
     <div id="works" ref={containerRef} data-scroll-container className="h-full w-full px-3  pt-16 uppercase overflow-hidden text-[10px] ">
@@ -22,15 +73,16 @@ const Works = ({ containerRef }) => {
       </h1>
 
       {/* Mobile view - single column layout */}
-      <div className=" mobile-view   md:hidden gap-2 grid columns-2 flex-wrap   ">
+      <div className=" mobile-view    md:hidden gap-2 grid columns-2 flex-wrap   ">
         {projectsData.map((project, index) => (
           <div
             // data-scroll
-            // data-scroll-speed="0.2"
+            // data-scroll-speed="-0."
             key={project.id}
-            className={`project-card ${index % 2 === 0 ? "w-fit h-auto text-left " : " w-3/5 h-auto text-right "} ${
+            // ref={(el) => mobileCardsRef.current[index] = el}
+            className={`project-card bg-orange-500 ${index % 2 === 0 ? "w-fit h-auto text-left origin-left " : " w-3/5 h-auto text-right origin-right "} ${
               index % 2 === 0 ? "mr-6" : "ml-auto"
-            } overflow-hidden mt-2  `}
+            } overflow-hidden mt-2 transition-all duration-100  `}
           >
             <div className="relative overflow-hidden  shadow-md  ">
               <img
@@ -38,7 +90,7 @@ const Works = ({ containerRef }) => {
                 // data-scroll-speed="0.2"
                 src={project.images[0] || "/placeholder.svg"}
                 alt={project.name}
-                className={` w-full h-auto object-cover object-center hover:scale-105 transition-all duration-300`}
+                className={`mob-card-img w-full h-auto object-cover object-center hover:scale-105 transition-all duration-300`}
               />
               {/* <div className="absolute inset-0 bg-black bg-opacity-30 opacity-0 hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
                 <span className="text-white text-xl font-bold">

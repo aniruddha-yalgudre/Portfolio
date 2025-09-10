@@ -87,6 +87,7 @@
 
 
 import P1c from "../assets/Work_Images/P1 C.png";
+
 import P2c from "../assets/Work_Images/P2 C.webp";
 import P3c from "../assets/Work_Images/P3 C.png";
 import P4c from "../assets/Work_Images/P4 C.jpg";
@@ -124,7 +125,7 @@ export const projectsData = [
     siteArea:"8500 Sq.ft",
     scope: " Architecture / Facade",
     clickable: true,
-    images: [P1c],
+    images: ["https://cdn.prod.website-files.com/658079e5596374c7eebab299/6581e17e6dc25570df9ecf49_concept-designs%20img%20(1)-p-2000.jpg","https://cdn.prod.website-files.com/6416fc1e04ae8a3c2ac1339e/66476175f801414dcba3a50c_kc24-fullsize-02.avif","https://assets-global.website-files.com/630534398d9471ade12fc55f/663d125bbeb513d4456fe4c8_Kieran%20Hover%20Reel-transcode.mp4","https://cdn.prod.website-files.com/6416fc1e04ae8a3c2ac1339e/6647508a060e192548a86291_kc24-fullsize-04-p-2000.avif","https://cdn.prod.website-files.com/6416fc1e04ae8a3c2ac1339e/6642448eb88009b7b1c6912d_kc24-leftside-04.avif","https://cdn.prod.website-files.com/6416fc1e04ae8a3c2ac1339e/6647624c85483c070e661713_kc24-fullsize-07-p-2000.avif","https://cdn.prod.website-files.com/6416fc1e04ae8a3c2ac1339e/664750a3718102f463c763ad_kc24-rightside-08.avif"],
     // //ProjectAssets:[rvid,r2,r3,r4,r5,iso1,iso2,iso3,iso4,ele1,ele2,ele3,fac1,fac2],
     bgColor:"#c6c2bf",
     navColor:"#c6c2bf",

@@ -2,7 +2,7 @@ import { useRef, useState, useEffect, useContext } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/all";
 import Transformtext from "../Partials/Transformtext";
-import { ThemeContext } from "../utils/themeContext";
+import { useTheme } from "../utils/themeContext";
 import { getCalApi } from "@calcom/embed-react";
 
 import logob from "../assets/logo/logob.svg";
@@ -23,7 +23,7 @@ const Navbar = ({ onNavClick, activeSection}) => {
   const TopNavbarRef = useRef(null);
   const scrollNavRef = useRef(null);
   const scrollImgRef = useRef(null);
-  const { isDarkMode, toggleTheme } = useContext(ThemeContext);
+  const { isDarkMode, toggleTheme } = useTheme();
   const [isMobile, setIsMobile] = useState(window.innerWidth < 640);
 
   // Handle window resize
@@ -93,7 +93,7 @@ const Navbar = ({ onNavClick, activeSection}) => {
           <div className="w-full flex items-start  justify-between ">
             <div
               onClick={() => handleNavClick("hero")}
-              className={`relative  flex flex-col justify-start  w-full  md:w-1/3 text-left  md:leading-3  uppercase cursor-pointer transition-all duration-200  `}
+              className={`relative  flex flex-col justify-start  w-full  md:w-1/3 text-left  md:leading-3  uppercase cursor-pointer transition-all duration-100  `}
             >
 
               <p 
@@ -107,7 +107,7 @@ const Navbar = ({ onNavClick, activeSection}) => {
               
               <img
                 ref={scrollImgRef}
-                className={`h-5 w-fit  opacity-0  object-contain object-center transition-all duration-100  mix-blend-difference `}
+                className={`h-5 self-start opacity-0  object-contain object-center transition-all duration-100  mix-blend-difference `}
                 src={isDarkMode ? logow : logob}
                 alt="logo"
                 srcSet={isDarkMode ? logow : logob}
@@ -222,12 +222,12 @@ const Navbar = ({ onNavClick, activeSection}) => {
 };
 
 const BottomNavbar = () => {
-  const { isDarkMode, toggleTheme } = useContext(ThemeContext);
+  const { isDarkMode, toggleTheme } = useTheme();
 
   return (
     <div className="relative ">
       <div className="fixed bottom-0 w-full h-9 z-[999] text-[10px]">
-        <div className="relative z-10 w-full h-full p-3 flex justify-between items-center uppercase">
+        <div className="relative z-10 w-full h-full p-3 flex justify-between items-center uppercase transition-all duration-100">
           <div className="part1 leading-none flex justify-start">
             <p className="mix-blend-difference hidden md:block">
               based in 【 india | Pune 】
